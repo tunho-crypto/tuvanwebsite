@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block tieu_de %}Có lỗi xảy ra (500){% endblock %}
+{% block noi_dung %}
+<section class="message-panel error-panel">
+  <p class="eyebrow">LỖI 500</p>
+  <h1>Hệ thống đang gặp sự cố</h1>
+  <p>Yêu cầu chưa thể hoàn tất. Vui lòng thử lại sau ít phút.</p>
+  <a class="btn btn-success mt-2" href="{% url 'trang_chu' %}">Về trang chủ</a>
+</section>
+{% endblock %}

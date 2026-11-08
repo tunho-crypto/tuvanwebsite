@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block tieu_de %}{{ tieu_de }}{% endblock %}
+{% block noi_dung %}
+<div class="row justify-content-center">
+  <div class="col-md-10 col-lg-{{ do_rong|default:6 }}">
+    <div class="card shadow-sm"><div class="card-body">
+      <h1 class="h4 mb-3">{{ tieu_de }}</h1>
+      {% if ghi_chu %}<p class="text-muted">{{ ghi_chu }}</p>{% endif %}
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {% for loi in form.non_field_errors %}<div class="alert alert-danger">{{ loi }}</div>{% endfor %}
+        {% for field in form %}{% include "_truong_form.html" %}{% endfor %}
+        <button type="submit" class="btn btn-success">{{ nut_luu|default:"Lưu" }}</button>
+        {% if url_huy %}<a href="{{ url_huy }}" class="btn btn-outline-secondary">Hủy</a>{% endif %}
+      </form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

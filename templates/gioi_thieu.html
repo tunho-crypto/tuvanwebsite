@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block tieu_de %}Giới thiệu | Tư vấn nông nghiệp Tây Nguyên{% endblock %}
+{% block noi_dung %}
+<section class="about-hero">
+  <div class="about-hero-copy">
+    <p class="eyebrow"><span></span> VỀ HỆ THỐNG</p>
+    <h1>Tri thức nông nghiệp,<br><em>gần hơn với nhà nông.</em></h1>
+    <p class="about-intro">Tư vấn nông nghiệp Tây Nguyên tập hợp thông tin cây trồng, mùa vụ và kỹ thuật canh tác, giúp người dùng thuận tiện tra cứu và tham khảo theo điều kiện sản xuất địa phương.</p>
+    <div class="about-hero-actions">
+      <a class="btn btn-success" href="{% if user.is_authenticated %}{% url 'trang_chu' %}{% else %}{% url 'dang_ky' %}{% endif %}">
+        {% if user.is_authenticated %}Khám phá hệ thống{% else %}Bắt đầu sử dụng{% endif %}
+      </a>
+      {% if not user.is_authenticated %}<a class="about-login-link" href="{% url 'dang_nhap' %}">Đã có tài khoản? Đăng nhập <span aria-hidden="true">→</span></a>{% endif %}
+    </div>
+  </div>
+  <div class="about-hero-art" aria-hidden="true">
+    <div class="about-sun"></div>
+    <div class="about-hill about-hill-back"></div>
+    <div class="about-hill about-hill-mid"></div>
+    <div class="about-hill about-hill-front"></div>
+    <div class="about-art-label"><span>ĐẤT ĐỎ / MẦM XANH</span><strong>Gieo tri thức,<br>gặt mùa bền vững.</strong></div>
+  </div>
+</section>
+
+<section class="about-section" aria-labelledby="about-features-heading">
+  <div class="about-section-heading">
+    <div>
+      <p class="eyebrow">ĐIỀU BẠN CÓ THỂ LÀM</p>
+      <h2 id="about-features-heading">Một điểm đến, nhiều thông tin hữu ích</h2>
+    </div>
+    <p>Hỗ trợ tra cứu và kết nối các nội dung nông nghiệp trong cùng một hệ thống.</p>
+  </div>
+  <div class="about-feature-grid">
+    <article class="about-feature-card">
+      <span class="about-feature-number">01 / TRA CỨU</span>
+      <span class="about-feature-icon" aria-hidden="true">⌕</span>
+      <h3>Thông tin thiết yếu</h3>
+      <p>Tìm hiểu cây trồng, tỉnh thành, mùa vụ, kỹ thuật canh tác và tài liệu tham khảo.</p>
+    </article>
+    <article class="about-feature-card">
+      <span class="about-feature-number">02 / THAM KHẢO</span>
+      <span class="about-feature-icon" aria-hidden="true">↗</span>
+      <h3>Gợi ý theo nhu cầu</h3>
+      <p>Nhận kết quả tham khảo dựa trên nhu cầu, địa phương và mùa vụ bạn cung cấp.</p>
+    </article>
+    <article class="about-feature-card">
+      <span class="about-feature-number">03 / KẾT NỐI</span>
+      <span class="about-feature-icon" aria-hidden="true">○</span>
+      <h3>Hỏi đáp cùng chuyên gia</h3>
+      <p>Gửi câu hỏi, theo dõi nội dung trao đổi và tham khảo giải đáp trong hệ thống.</p>
+    </article>
+  </div>
+</section>
+
+<section class="about-how" aria-labelledby="about-how-heading">
+  <div class="about-how-intro">
+    <p class="eyebrow">BẮT ĐẦU THẬT ĐƠN GIẢN</p>
+    <h2 id="about-how-heading">Từ nhu cầu đến thông tin tham khảo</h2>
+    <p>Chọn nội dung bạn cần, cung cấp thông tin phù hợp và xem các kết quả được hệ thống tổng hợp.</p>
+  </div>
+  <ol class="about-steps">
+    <li><span>01</span><div><h3>Chọn chức năng</h3><p>Tra cứu, tư vấn hoặc xem tài liệu nông nghiệp.</p></div></li>
+    <li><span>02</span><div><h3>Nhập thông tin</h3><p>Chọn cây trồng, địa phương, mùa vụ hoặc mô tả nhu cầu.</p></div></li>
+    <li><span>03</span><div><h3>Xem và đối chiếu</h3><p>Tham khảo kết quả cùng nguồn thông tin được cung cấp.</p></div></li>
+  </ol>
+</section>
+
+<aside class="about-note">
+  <span class="about-note-mark" aria-hidden="true">i</span>
+  <p><strong>Lưu ý:</strong> Nội dung trên hệ thống mang tính chất tham khảo, không thay thế tư vấn chuyên môn tại địa phương. Hãy cân nhắc điều kiện thực tế trước khi áp dụng.</p>
+</aside>
+{% endblock %}

@@ -1,0 +1,14 @@
+{# Một trường form: nhãn + ô nhập + lỗi + gợi ý. Dùng: {% include "_truong_form.html" with field=field %} #}
+<div class="mb-3">
+  {% if field.field.widget.input_type == "checkbox" %}
+    <div class="form-check">
+      {% include "_o_nhap.html" %}
+      <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    </div>
+  {% else %}
+    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>
+    {% include "_o_nhap.html" %}
+  {% endif %}
+  {% for loi in field.errors %}<div class="invalid-feedback d-block">{{ loi }}</div>{% endfor %}
+  {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+</div>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block tieu_de %}Không có quyền truy cập{% endblock %}
+{% block noi_dung %}
+<div class="text-center py-5">
+  <h1 class="display-4">403</h1>
+  <p class="lead">Bạn không có quyền truy cập chức năng này.</p>
+  <a class="btn btn-success" href="{% url 'trang_chu' %}">Về trang chủ</a>
+</div>
+{% endblock %}

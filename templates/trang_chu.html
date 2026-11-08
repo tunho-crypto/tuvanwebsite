@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block tieu_de %}Trang chủ | Tư vấn nông nghiệp Tây Nguyên{% endblock %}
+{% block noi_dung %}
+<section class="front-hero">
+  <div class="front-hero-copy">
+    <p class="eyebrow"><span></span> CẨM NANG NÔNG NGHIỆP TÂY NGUYÊN</p>
+    <h1>Tri thức địa phương,<br><em>mùa vụ bền vững.</em></h1>
+    <p class="front-lead">Tra cứu cây trồng, kỹ thuật và nguồn tư vấn phù hợp với điều kiện sản xuất tại Tây Nguyên.</p>
+    <div class="front-welcome">Xin chào, <strong>{{ user.ho_ten }}</strong><span>Vai trò: {{ user.vai_tro.ten_vai_tro }}</span></div>
+  </div>
+  <div class="front-hero-art" aria-hidden="true">
+    <div class="sun-disc"></div>
+    <div class="field field-back"></div>
+    <div class="field field-mid"></div>
+    <div class="field field-front"></div>
+    <div class="hero-note"><span>01 / TÂY NGUYÊN</span><strong>Đất đỏ<br>nuôi mầm xanh</strong></div>
+  </div>
+</section>
+
+<section class="feature-section" aria-labelledby="feature-heading">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">KHÁM PHÁ HỆ THỐNG</p>
+      <h2 id="feature-heading">Thông tin thiết yếu cho nhà nông</h2>
+    </div>
+    <span class="section-index">NỘI DUNG / 01—04</span>
+  </div>
+
+  <div class="row g-3 g-lg-4 feature-grid">
+    {% for muc in menu %}
+      {% if muc.nhom %}
+      <div class="col-md-6 col-xl-4">
+        <article class="feature-card h-100">
+          <div class="feature-card-top"><span class="feature-kicker">CHUYÊN MỤC</span><span class="feature-arrow" aria-hidden="true">↗</span></div>
+          <h3>{{ muc.ten }}</h3>
+          <div class="feature-links">
+            {% for con in muc.nhom %}
+            <a href="{{ con.url }}">{{ con.ten }}<span aria-hidden="true">→</span></a>
+            {% endfor %}
+          </div>
+        </article>
+      </div>
+      {% elif muc.ten != "Trang chủ" %}
+      <div class="col-md-6 col-xl-4">
+        <a class="feature-card feature-card-single h-100" href="{{ muc.url }}">
+          <div class="feature-card-top"><span class="feature-kicker">DÀNH CHO BẠN</span><span class="feature-arrow" aria-hidden="true">↗</span></div>
+          <h3>{{ muc.ten }}</h3>
+          <span class="single-action">Mở chức năng <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

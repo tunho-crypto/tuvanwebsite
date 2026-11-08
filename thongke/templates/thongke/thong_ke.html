@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load dinh_dang %}
+{% block tieu_de %}Thống kê{% endblock %}
+{% block noi_dung %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Thống kê</h1>
+  {% if tk %}<a class="btn btn-success" href="{% url 'thongke:thong_ke' %}?{{ query_xuat }}">⬇ Xuất Excel</a>{% endif %}
+</div>
+
+<form class="row g-2 mb-4" method="get">
+  {% for loi in form.non_field_errors %}<div class="col-12"><div class="alert alert-danger py-2 mb-0">{{ loi }}</div></div>{% endfor %}
+  <div class="col-md-3">{% with field=form.tu_ngay %}<label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}{% endwith %}</div>
+  <div class="col-md-3">{% with field=form.den_ngay %}<label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}{% endwith %}</div>
+  <div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-success w-100">Xem</button></div>
+  <div class="col-md-2 d-flex align-items-end"><a class="btn btn-outline-secondary w-100" href="{% url 'thongke:thong_ke' %}">Bỏ lọc</a></div>
+</form>
+
+{% if tk %}
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><div class="card text-center shadow-sm h-100"><div class="card-body"><div class="display-6">{{ tk.tu_van.tong|so }}</div><div class="text-muted">Lượt tư vấn</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card text-center shadow-sm h-100"><div class="card-body"><div class="display-6">{{ tk.tu_van.ty_le_trong_pham_vi|phan_tram|default:"—" }}</div><div class="text-muted">Tư vấn có đề xuất</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card text-center shadow-sm h-100"><div class="card-body"><div class="display-6">{{ tk.hoi_dap.ty_le_da_tra_loi|phan_tram|default:"—" }}</div><div class="text-muted">Câu hỏi đã được chuyên gia trả lời</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card text-center shadow-sm h-100"><div class="card-body"><div class="display-6">{{ tk.tim_kiem.tong|so }}</div><div class="text-muted">Lượt tìm kiếm</div></div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100"><div class="card-header fw-bold">Tư vấn</div><div class="card-body">
+      <p class="mb-2">Có đề xuất: <strong>{{ tk.tu_van.trong_pham_vi|so }}</strong> · Ngoài phạm vi: <strong>{{ tk.tu_van.ngoai_pham_vi|so }}</strong></p>
+      <div class="progress mb-3" role="progressbar"><div class="progress-bar bg-success" style="width: {{ tk.tu_van.ty_le_trong_pham_vi|phan_tram_css }}%"></div></div>
+      <h2 class="h6">Theo tỉnh thành</h2>
+      <table class="table table-sm"><tbody>
+        {% for ten, n in tk.tu_van.theo_tinh %}<tr><td>{{ ten }}</td><td class="text-end">{{ n|so }}</td></tr>{% empty %}<tr><td class="text-muted">Chưa có dữ liệu</td></tr>{% endfor %}
+      </tbody></table>
+      <h2 class="h6">Theo mùa vụ</h2>
+      <table class="table table-sm mb-0"><tbody>
+        {% for ten, n in tk.tu_van.theo_mua %}<tr><td>{{ ten }}</td><td class="text-end">{{ n|so }}</td></tr>{% empty %}<tr><td class="text-muted">Chưa có dữ liệu</td></tr>{% endfor %}
+      </tbody></table>
+    </div></div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100"><div class="card-header fw-bold">Cây được đề xuất nhiều nhất</div><div class="card-body">
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Cây trồng</th><th class="text-end">Hạng 1</th><th class="text-end">Xuất hiện</th></tr></thead>
+        <tbody>
+        {% for c in tk.tu_van.cay_duoc_de_xuat|slice:":10" %}<tr><td>{{ c.ten_cay }}</td><td class="text-end">{{ c.so_lan_hang_1|so }}</td><td class="text-end">{{ c.so_lan_xuat_hien|so }}</td></tr>
+        {% empty %}<tr><td colspan="3" class="text-muted">Chưa có dữ liệu</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100"><div class="card-header fw-bold">Hỏi đáp</div><div class="card-body">
+      <table class="table table-sm mb-3"><tbody>
+        <tr><td>Tổng số câu hỏi</td><td class="text-end">{{ tk.hoi_dap.tong|so }}</td></tr>
+        <tr><td>Chờ chuyên gia trả lời</td><td class="text-end">{{ tk.hoi_dap.cho_tra_loi|so }}</td></tr>
+        <tr><td>Chuyên gia đã trả lời</td><td class="text-end">{{ tk.hoi_dap.da_tra_loi|so }}</td></tr>
+        <tr><td>Ngoài phạm vi (trả lời tự động)</td><td class="text-end">{{ tk.hoi_dap.ngoai_pham_vi|so }}</td></tr>
+      </tbody></table>
+      <p class="mb-1">Tỷ lệ chuyên gia đã trả lời (trên câu hỏi trong phạm vi): <strong>{{ tk.hoi_dap.ty_le_da_tra_loi|phan_tram|default:"—" }}</strong></p>
+      <div class="progress mb-3" role="progressbar"><div class="progress-bar bg-success" style="width: {{ tk.hoi_dap.ty_le_da_tra_loi|phan_tram_css }}%"></div></div>
+      <p class="mb-0">Tỷ lệ có câu trả lời (kể cả tự động): <strong>{{ tk.hoi_dap.ty_le_co_tra_loi|phan_tram|default:"—" }}</strong></p>
+    </div></div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100"><div class="card-header fw-bold">Từ khóa tìm kiếm nhiều nhất</div><div class="card-body">
+      <table class="table table-sm mb-0">
+        <thead><tr><th>#</th><th>Từ khóa</th><th class="text-end">Số lần</th></tr></thead>
+        <tbody>
+        {% for t in tk.tim_kiem.top %}<tr><td>{{ forloop.counter }}</td><td>{{ t.tu_khoa }}</td><td class="text-end">{{ t.so_lan|so }}</td></tr>
+        {% empty %}<tr><td colspan="3" class="text-muted">Chưa có dữ liệu</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

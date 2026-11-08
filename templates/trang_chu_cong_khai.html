@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block tieu_de %}Tư vấn nông nghiệp Tây Nguyên{% endblock %}
+{% block noi_dung %}
+<section class="public-hero">
+  <div class="public-hero-copy">
+    <p class="eyebrow"><span></span> CẨM NANG NÔNG NGHIỆP TÂY NGUYÊN</p>
+    <h1>Vững kiến thức,<br><em>bền mùa vụ.</em></h1>
+    <p class="front-lead">Nền tảng tra cứu cây trồng, kỹ thuật canh tác và thông tin tư vấn phù hợp với điều kiện sản xuất tại Tây Nguyên.</p>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-success btn-lg" href="{% url 'dang_nhap' %}">Đăng nhập sử dụng</a>
+      <a class="btn btn-outline-success btn-lg" href="{% url 'dang_ky' %}">Tạo tài khoản</a>
+      <a class="btn btn-link btn-lg" href="{% url 'gioi_thieu' %}">Tìm hiểu thêm</a>
+    </div>
+  </div>
+  <div class="front-hero-art public-hero-art" aria-hidden="true">
+    <div class="sun-disc"></div>
+    <div class="field field-back"></div>
+    <div class="field field-mid"></div>
+    <div class="field field-front"></div>
+    <div class="hero-note"><span>01 / TÂY NGUYÊN</span><strong>Đất đỏ<br>nuôi mầm xanh</strong></div>
+  </div>
+</section>
+
+<section class="public-highlights" aria-label="Các tiện ích">
+  <article><span>01</span><h2>Tra cứu thông tin</h2><p>Tìm hiểu cây trồng, mùa vụ, kỹ thuật canh tác và tài liệu tham khảo.</p></article>
+  <article><span>02</span><h2>Tham khảo tư vấn</h2><p>Đối chiếu nhu cầu sản xuất với thông tin và khuyến nghị trong hệ thống.</p></article>
+  <article><span>03</span><h2>Kết nối hỏi đáp</h2><p>Trao đổi câu hỏi nông nghiệp với chuyên gia sau khi đăng nhập.</p></article>
+</section>
+{% endblock %}

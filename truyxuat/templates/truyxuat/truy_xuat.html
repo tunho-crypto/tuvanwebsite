@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block tieu_de %}Truy xuất nguồn{% endblock %}
+{% block noi_dung %}
+<div class="row justify-content-center"><div class="col-lg-9">
+  <h1 class="h4 mb-3">Truy xuất nguồn tham chiếu</h1>
+  <form class="row g-2 mb-4" method="get" action="{% url 'truyxuat:truy_xuat' %}">
+    <div class="col-md-8"><input class="form-control" name="ma" value="{{ ma }}" placeholder="Nhập mã luật, ví dụ LT20260101-001"></div>
+    <div class="col-md-3"><button class="btn btn-success w-100">Truy xuất</button></div>
+  </form>
+
+  {% if khong_tim_thay %}
+    <div class="alert alert-danger">Không tìm thấy luật có mã «{{ ma }}».</div>
+  {% elif luat or ban_chup %}
+    {% if lich_su %}
+    <div class="alert alert-light border">
+      Truy xuất từ lần tư vấn <a href="{% url 'tuvan:lich_su_chi_tiet' lich_su.pk %}"><strong>{{ lich_su.ma_lstv }}</strong></a>
+      ({{ lich_su.thoi_gian|date:"d/m/Y H:i" }}).
+    </div>
+    {% endif %}
+
+    {% if luat %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header d-flex justify-content-between">
+        <strong>Luật {{ luat.rule_id }}</strong>
+        {% if luat.is_active %}<span class="badge text-bg-success">Đang áp dụng</span>{% else %}<span class="badge text-bg-secondary">Đã ngừng áp dụng</span>{% endif %}
+      </div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-3">Cây trồng</dt><dd class="col-sm-9">{{ luat.cay_tro.ten_cay }}</dd>
+          <dt class="col-sm-3">Tỉnh thành</dt><dd class="col-sm-9">{{ luat.tinh_thanh.ten_tinh|default:"Mọi tỉnh" }}</dd>
+          <dt class="col-sm-3">Mùa vụ</dt><dd class="col-sm-9">{{ luat.mua_vu.ten_mua|default:"Mọi mùa" }}</dd>
+          <dt class="col-sm-3">Từ khóa nhu cầu</dt><dd class="col-sm-9">{{ luat.condition_json.tu_khoa|join:", " }}</dd>
+          {% if la_quan_ly %}<dt class="col-sm-3">Hệ số ưu tiên</dt><dd class="col-sm-9">{{ luat.score_weight }}</dd>{% endif %}
+        </dl>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-3 border-success">
+      <div class="card-header"><strong>Tài liệu tham chiếu</strong></div>
+      <div class="card-body">
+        {% if luat.tai_lieu %}
+        <dl class="row mb-0">
+          <dt class="col-sm-3">Tên tài liệu</dt><dd class="col-sm-9">{{ luat.tai_lieu.ten_tl }}</dd>
+          <dt class="col-sm-3">Nguồn</dt><dd class="col-sm-9"><span class="badge text-bg-success">{{ luat.tai_lieu.nguon_tham_chieu }}</span></dd>
+          <dt class="col-sm-3">Mã tài liệu</dt><dd class="col-sm-9">{{ luat.tai_lieu.ma_tl }}</dd>
+        </dl>
+        {% else %}<span class="text-muted">Luật này chưa được gắn tài liệu tham chiếu.</span>{% endif %}
+      </div>
+    </div>
+    {% if tai_lieu_da_doi %}
+    <div class="alert alert-warning">Lưu ý: tài liệu của luật này đã được cập nhật sau lần tư vấn trên. Nguồn tại thời điểm tư vấn:
+      {% if ban_chup.tai_lieu %}{{ ban_chup.tai_lieu.ten_tl }} ({{ ban_chup.tai_lieu.nguon_tham_chieu }}){% else %}chưa có tài liệu{% endif %}.</div>
+    {% endif %}
+    {% else %}
+    <div class="alert alert-warning">Luật <strong>{{ ma }}</strong> đã bị xóa khỏi hệ thống. Dưới đây là nguồn đã lưu trong lịch sử tư vấn.</div>
+    <div class="card shadow-sm mb-3 border-success">
+      <div class="card-header"><strong>Nguồn tại thời điểm tư vấn ({{ ban_chup.ten_cay }})</strong></div>
+      <div class="card-body">
+        {% if ban_chup.tai_lieu %}
+        <dl class="row mb-0">
+          <dt class="col-sm-3">Tên tài liệu</dt><dd class="col-sm-9">{{ ban_chup.tai_lieu.ten_tl }}</dd>
+          <dt class="col-sm-3">Nguồn</dt><dd class="col-sm-9"><span class="badge text-bg-success">{{ ban_chup.tai_lieu.nguon_tham_chieu }}</span></dd>
+        </dl>
+        {% else %}<span class="text-muted">Luật này khi đó chưa có tài liệu tham chiếu.</span>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+  {% endif %}
+</div></div>
+{% endblock %}
