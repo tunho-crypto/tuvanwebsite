@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block tieu_de %}Hỏi đáp{% endblock %}
+{% block noi_dung %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Hỏi đáp{% if not xem_tat_ca %} của bạn{% endif %}
+    {% if xem_tat_ca and so_cho_tra_loi %}<span class="badge text-bg-warning">{{ so_cho_tra_loi }} chờ trả lời</span>{% endif %}</h1>
+  {% if co_the_hoi %}<a href="{% url 'hoidap:them' %}" class="btn btn-success">+ Đặt câu hỏi</a>{% endif %}
+</div>
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-5"><input class="form-control" name="q" value="{{ loc.q }}" placeholder="Mã hoặc nội dung câu hỏi"></div>
+  <div class="col-md-3">
+    <select class="form-select" name="trang_thai"><option value="">Mọi trạng thái</option>
+      {% for ma, ten in trang_thai_choices %}<option value="{{ ma }}" {% if loc.trang_thai == ma %}selected{% endif %}>{{ ten }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2"><button class="btn btn-outline-success w-100">Lọc</button></div>
+</form>
+<div class="table-responsive bg-white rounded shadow-sm">
+  <table class="table table-hover align-middle mb-0">
+    <thead><tr><th>Mã</th><th>Thời gian</th>{% if xem_tat_ca %}<th>Người hỏi</th>{% endif %}<th>Câu hỏi</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>
+    {% for ch in ds_cau_hoi %}
+      <tr>
+        <td class="text-nowrap">{{ ch.ma_ch }}</td>
+        <td class="text-nowrap">{{ ch.thoi_gian|date:"d/m/Y H:i" }}</td>
+        {% if xem_tat_ca %}<td>{{ ch.nguoi_dung.username }}</td>{% endif %}
+        <td>{{ ch.noi_dung|truncatechars:70 }}</td>
+        <td>
+          {% if ch.trang_thai == "DA_TRA_LOI" %}<span class="badge text-bg-success">{{ ch.get_trang_thai_display }}</span>
+          {% elif ch.trang_thai == "CHO_TRA_LOI" %}<span class="badge text-bg-warning">{{ ch.get_trang_thai_display }}</span>
+          {% else %}<span class="badge text-bg-secondary">{{ ch.get_trang_thai_display }}</span>{% endif %}
+        </td>
+        <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{% url 'hoidap:chi_tiet' ch.pk %}">Xem</a></td>
+      </tr>
+    {% empty %}<tr><td colspan="6" class="text-center text-muted py-4">Chưa có câu hỏi nào.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="mt-3">{% include "taikhoan/_phan_trang.html" %}</div>
+{% endblock %}

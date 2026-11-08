@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block tieu_de %}Câu hỏi {{ cau_hoi.ma_ch }}{% endblock %}
+{% block noi_dung %}
+<div class="row justify-content-center"><div class="col-lg-9">
+  <div class="card shadow-sm mb-3">
+    <div class="card-header d-flex justify-content-between">
+      <span><strong>{{ cau_hoi.ma_ch }}</strong> · {{ cau_hoi.nguoi_dung.ho_ten }} · {{ cau_hoi.thoi_gian|date:"d/m/Y H:i" }}</span>
+      <span class="badge {% if cau_hoi.trang_thai == 'DA_TRA_LOI' %}text-bg-success{% elif cau_hoi.trang_thai == 'CHO_TRA_LOI' %}text-bg-warning{% else %}text-bg-secondary{% endif %}">{{ cau_hoi.get_trang_thai_display }}</span>
+    </div>
+    <div class="card-body"><h2 class="h6 text-muted">Câu hỏi</h2><p class="mb-0" style="white-space: pre-line">{{ cau_hoi.noi_dung }}</p></div>
+  </div>
+
+  {% if cau_hoi.tra_loi %}
+  <div class="card shadow-sm border-success mb-3">
+    <div class="card-header">
+      {% if cau_hoi.tra_loi.la_tu_dong %}Trả lời tự động{% else %}Trả lời của {{ cau_hoi.tra_loi.nguoi_tra_loi.ho_ten|default:"chuyên gia" }}{% endif %}
+      · {{ cau_hoi.tra_loi.thoi_gian|date:"d/m/Y H:i" }}
+    </div>
+    <div class="card-body"><p class="mb-0" style="white-space: pre-line">{{ cau_hoi.tra_loi.noi_dung }}</p></div>
+  </div>
+  {% else %}
+  <div class="alert alert-warning">Câu hỏi đang chờ chuyên gia trả lời.</div>
+  {% endif %}
+
+  <a class="btn btn-outline-secondary" href="{% url 'hoidap:ds' %}">← Danh sách</a>
+  {% if co_the_tra_loi %}<a class="btn btn-success" href="{% url 'hoidap:tra_loi' cau_hoi.pk %}">Trả lời</a>{% endif %}
+</div></div>
+{% endblock %}

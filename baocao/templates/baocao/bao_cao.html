@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block tieu_de %}Báo cáo{% endblock %}
+{% block noi_dung %}
+<h1 class="h4 mb-3">Báo cáo Excel</h1>
+<div class="row g-3">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm h-100"><div class="card-body d-flex flex-column">
+      <h2 class="h6">Danh sách cây trồng</h2>
+      <p class="text-muted flex-grow-1">{{ so_cay }} cây trồng kèm số luật đang áp dụng.</p>
+      <a class="btn btn-success" href="{% url 'baocao:cay_trong' %}">⬇ Tải Excel</a>
+    </div></div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm h-100"><div class="card-body d-flex flex-column">
+      <h2 class="h6">Luật tư vấn hiện hành</h2>
+      <p class="text-muted flex-grow-1">{{ so_luat }} luật đang bật, kèm tài liệu và nguồn tham chiếu.</p>
+      <a class="btn btn-success" href="{% url 'baocao:luat' %}">⬇ Tải Excel</a>
+    </div></div>
+  </div>
+  <div class="col-md-12 col-lg-4">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h6">Lịch sử tư vấn</h2>
+      <p class="text-muted">Tổng {{ so_lich_su }} lần tư vấn. Chọn khoảng ngày (có thể để trống để lấy tất cả).</p>
+      <form method="get" action="{% url 'baocao:lich_su' %}">
+        <div class="row g-2">
+          <div class="col-6">{% with field=form.tu_ngay %}<label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endwith %}</div>
+          <div class="col-6">{% with field=form.den_ngay %}<label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endwith %}</div>
+        </div>
+        <button class="btn btn-success mt-3">⬇ Tải Excel</button>
+      </form>
+    </div></div>
+  </div>
+  <div class="col-12">
+    <div class="card shadow-sm"><div class="card-body d-flex justify-content-between align-items-center">
+      <div><h2 class="h6 mb-1">Thống kê</h2><span class="text-muted">Số lượt tư vấn, tỷ lệ câu hỏi được trả lời, từ khóa tìm nhiều nhất; có xuất Excel.</span></div>
+      <a class="btn btn-outline-success" href="{% url 'thongke:thong_ke' %}">Xem thống kê</a>
+    </div></div>
+  </div>
+</div>
+{% endblock %}
